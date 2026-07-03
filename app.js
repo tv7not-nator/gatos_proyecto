@@ -21,7 +21,7 @@ const conexion = mysql.createConnection({
     host: '10.1.15.29',
     user: 'alumno',
     password: 'alumno',
-    database: 'gatos'
+    database: 'Tahis'
 });
 
 const cabecera = fs.readFileSync('public/header.html', 'utf8');
@@ -44,7 +44,7 @@ server.post("/login", (req, res) => {
     }
 });
 
-//muestra todos los gatos con su respectiva foto
+//muestra todos los gatos
 server.get("/gatos", (req, res) => {
 
     conexion.query("select * from gatos", (error, data) => {
@@ -60,12 +60,13 @@ server.get("/gatos", (req, res) => {
             for (const i of data) {
                 filas += `
                     <tr>
-                        <td><img src="${i.foto_url}" width="140" height="110"></td>
                         <td>${i.id}</td>
                         <td>${i.nombre}</td>
                         <td>${i.raza}</td>
                         <td>${i.edad} años</td>
+                        <td>${i.sexo}</td>
                         <td>${i.color}</td>
+                        <td>${i.peso}</td>
                         <td>
                             <a href="/editar_gato?id=${i.id}">Editar</a>&nbsp;
                             <a href="/eliminar_gato?id=${i.id}">Eliminar</a>
@@ -79,7 +80,7 @@ server.get("/gatos", (req, res) => {
             <h1>Catálogo de Gatos</h1>
             <table border="1" class="tabla_gatos">
                 <tr>
-                    <td>FOTO</td><td>ID</td><td>NOMBRE</td><td>RAZA</td><td>EDAD</td><td>COLOR</td><td>ACCIÓN</td>
+                    <td>ID</td><td>NOMBRE</td><td>RAZA</td><td>EDAD</td><td>SEXO</td><td>COLOR</td><td>PESO</td><td>ACCIONAME</td>
                 </tr>
                 ${filas}
             </table>
@@ -109,7 +110,13 @@ server.get("/nuevo_gato", (req, res) => {
                                 <td>Edad</td><td><input type="number" name="edad" required></td>
                             </tr>
                             <tr>
+                                <td>Sexo</td><td><input type="text" name="sexo" required></td>
+                            </tr>
+                            <tr>
                                 <td>Color</td><td><input type="text" name="color" required></td>
+                            </tr>
+                            <tr>
+                                <td>Peso</td><td><input type="decimal" name="peso" required></td>
                             </tr>
                             <tr>
                                 <td colspan="2" align="center">
@@ -121,8 +128,6 @@ server.get("/nuevo_gato", (req, res) => {
                 </tr>
             </table>
         </form>
-        <p><i>La foto se genera automáticamente y en vivo desde CATAAS (cataas.com),
-        una foto real de gato con el nombre escrito encima.</i></p>
     `;
     res.send(cabecera + contenido + final);
 });
@@ -132,14 +137,13 @@ server.post("/insertar_gato", (req, res) => {
     const nombre = req.body.nombre;
     const raza = req.body.raza;
     const edad = req.body.edad;
+    const sexo = req.body.sexo;
     const color = req.body.color;
-
-    // La foto se construye con la API real CATAAS usando el nombre del gato
-    const foto_url = `https://cataas.com/cat/says/${encodeURIComponent(nombre)}?fontSize=40&fontColor=white`;
+    const peso = req.body.peso;
 
     conexion.query(
-        "insert into gatos(nombre,raza,edad,color,foto_url) values(?,?,?,?,?)",
-        [nombre, raza, edad, color, foto_url],
+        "insert into gatos(nombre,raza,edad,sexo,color,peso) values(?,?,?,?,?,?,?)",
+        [nombre, raza, edad, sexo, color, peso],
         (err, data) => {
             if (err) {
                 const contenido = `
@@ -176,7 +180,6 @@ server.get("/editar_gato", (req, res) => {
             const g = data[0];
             const contenido = `
                 <h1>Editar Gato</h1>
-                <img src="${g.foto_url}" width="180"><br><br>
                 <form name="editar" action="/actualizar_gato" method="POST">
                     <input type="hidden" name="id" value="${g.id}">
                     <table border="1">
@@ -193,7 +196,13 @@ server.get("/editar_gato", (req, res) => {
                                         <td>Edad</td><td><input type="number" name="edad" value="${g.edad}"></td>
                                     </tr>
                                     <tr>
+                                        <td>Sexo</td><td><input type="text" name="sexo" value="${g.sexo}"></td>
+                                    </tr>
+                                    <tr>
                                         <td>Color</td><td><input type="text" name="color" value="${g.color}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Peso</td><td><input type="decimal" name="peso" value="${g.peso}"></td>
                                     </tr>
                                     <tr>
                                         <td colspan="2" align="center">
@@ -217,14 +226,13 @@ server.post("/actualizar_gato", (req, res) => {
     const nombre = req.body.nombre;
     const raza = req.body.raza;
     const edad = req.body.edad;
+    const sexo = req.body.sexo;
     const color = req.body.color;
-
-    // Si cambia el nombre, regeneramos la foto para que el texto siga coincidiendo
-    const foto_url = `https://cataas.com/cat/says/${encodeURIComponent(nombre)}?fontSize=40&fontColor=white`;
+    const peso = req.body.peso;
 
     conexion.query(
-        "update gatos set nombre=?, raza=?, edad=?, color=?, foto_url=? where id=?",
-        [nombre, raza, edad, color, foto_url, id_recibido],
+        "update gatos set nombre=?, raza=?, edad=?, sexo=?, color=?, peso=? where id=?",
+        [nombre, raza, edad, sexo, color, peso, id_recibido],
         (err, data) => {
             if (err) {
                 const contenido = `
@@ -262,7 +270,6 @@ server.get("/eliminar_gato", (req, res) => {
             const nombre_gato = data[0].nombre;
             const contenido = `
                 <h1>¿Está seguro(a) que desea eliminar a <b>${nombre_gato}</b>?</h1>
-                <img src="${data[0].foto_url}" width="180"><br><br>
                 <input type="button" name="btn1" value="SI" onClick="location='/confirmar_eliminacion?id=${id_recibido}';">
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <input type="button" name="btn2" value="NO" onClick="location='/gatos';">
