@@ -6,7 +6,7 @@ Plataforma web orientada a gatos bonitos y gorditos.
 
 1. Clona el repositorio.
 2. Ejecuta `npm install` para instalar dependencias.
-3. Crea la base de datos ejecutando `gatos.sql` en MySQL.
+3. Crea la base de datos ejecutando `gatetes.sql` en MySQL.
 4. Ejecuta `npm start` para iniciar el servidor.
 
 ## Requerimientos Cumplidos
