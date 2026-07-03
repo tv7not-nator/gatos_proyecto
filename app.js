@@ -6,9 +6,9 @@ const mysql = require('mysql2');
 const server = express();
 
 server.use(express.urlencoded({ extended: true }));
-server.use(express.static('public')); // sirve HTML, imágenes, CSS, todo
+server.use(express.static('public'));
 
-/* --- CONSOLA ---
+/* --- INGRESAR EN CONSOLA ---
 
 npm init -y
 npm install express
