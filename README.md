@@ -12,9 +12,13 @@ Plataforma web orientada a gatos bonitos y gorditos.
 ## Requerimientos Cumplidos
 
 - Contiene su respectivo index.html.
-- 
+- Separé HTML, CSS y JS en separación de carpetas.
+- CRUD agregado en su totalidad.
+- Formulario con más de 4 campos por rellenar.
+- Hay mensajes de error generales.
+- Compatibilidad.
 
 ## Uso
 
 - Inicia sesión con las credenciales demo.
-- ¡Podrás leer, agregar, editar y eliminar cuantos gatos quieras!
+- ¡Podrás leer, agregar, editar y eliminar cuántos gatos quieras!
