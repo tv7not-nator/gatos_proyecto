@@ -1,0 +1,42 @@
+body {
+    background-image: url("../images/fondo gatetes.jpg");
+    background-color: #7a4a2b;
+    font-family: Helvetica, sans-serif;
+}
+
+h1 {
+    color: #fff4e6;
+}
+
+table.tabla_gatos {
+    border-collapse: collapse;
+}
+
+table.tabla_gatos td {
+    padding: 8px 12px;
+}
+
+table.tabla_gatos img {
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+input[type="submit"], input[type="button"] {
+    background-color: #d97b3f;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 6px;
+}
+
+input[type="submit"]:hover, input[type="button"]:hover {
+    background-color: #b8622e;
+}
+
+a {
+    color: #7a4a2b;
+    font-weight: bold;
+    text-decoration: none;
+}

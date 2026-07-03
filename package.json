@@ -1,0 +1,17 @@
+{
+  "name": "gatopedia",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "CRUD de gatos con Express, MySQL",
+  "dependencies": {
+    "express": "^4.22.2",
+    "mysql2": "^3.22.5"
+  }
+}
